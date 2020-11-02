@@ -99,7 +99,12 @@ module.exports = {
   },
   // },
 
-  buildModules: ['@nuxtjs/router', '@nuxt/typescript-build', 'nuxt-typed-vuex'],
+  buildModules: [
+    '@nuxtjs/router',
+    '@nuxt/typescript-build',
+    'nuxt-typed-vuex',
+    '@nuxtjs/html-validator'
+  ],
 
   modules: [
     '@nuxtjs/style-resources',
@@ -109,6 +114,10 @@ module.exports = {
     '@nuxtjs/axios',
     ['cookie-universal-nuxt', { alias: 'cookies' }]
   ],
+
+  htmlValidator: {
+    usePrettier: true
+  },
 
   axios: {
     credentials: true,
