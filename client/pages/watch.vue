@@ -1,7 +1,7 @@
 <template>
   <div class="watch">
     <!-- <video v-if="!jsEnabled" controls :src="getHDUrl()" class="nojs-player" /> -->
-    <VideoPlayer :key="video.id" :video="video" class="video-player-p" ref="videoplayer" />
+    <VideoPlayer :key="video.id" ref="videoplayer" :video="video" class="video-player-p" />
     <div class="video-meta">
       <CollapsibleSection
         class="recommended-videos mobile"
@@ -168,8 +168,6 @@ import CollapsibleSection from '@/components/list/CollapsibleSection.vue';
 import BadgeButton from '@/components/buttons/BadgeButton.vue';
 import Vue from 'vue';
 import ViewTubeApi from '@/plugins/services/viewTubeApi.ts';
-import { SponsorBlock } from '@/plugins/services/sponsorBlock.ts';
-// import invidious from '~/plugins/services/invidious';
 
 export default Vue.extend({
   name: 'Watch',
@@ -268,8 +266,6 @@ export default Vue.extend({
     }
     this.loadComments();
     this.$store.commit('miniplayer/setCurrentVideo', this.video);
-    const sponsorblock = new SponsorBlock(this.video.videoId);
-    sponsorblock.getSkipSegments();
   },
   methods: {
     setTimestamp(e: any, seconds: number) {
