@@ -122,7 +122,10 @@
             {{ video.description }}
           </div>
           <Spinner v-if="commentsLoading" />
-          <div v-if="!commentsLoading" class="comments-container">
+          <div v-if="commentsError" class="comments-error">
+            <p>Error loading comments. Try changing the invidious instance.</p>
+          </div>
+          <div v-if="!commentsLoading && comment" class="comments-container">
             <div class="comments-count">
               <p>
                 {{ comment.commentCount && comment.commentCount.toLocaleString('en-US') }}
@@ -238,6 +241,7 @@ export default Vue.extend({
       video: [],
       comment: null,
       commentsLoading: true,
+      commentsError: false,
       commentsContinuationLink: null,
       commentsContinuationLoading: false,
       commons: Commons,
@@ -300,10 +304,16 @@ export default Vue.extend({
             this.comment = data;
             this.commentsLoading = false;
             this.commentsContinuationLink = data.continuation || null;
+          } else {
+            this.commentsLoading = false;
+            this.commentsError = true;
+            this.comment = null;
           }
         })
-        .catch(error => {
-          console.error(error);
+        .catch(_ => {
+          this.commentsLoading = false;
+          this.commentsError = true;
+          this.comment = null;
         });
     },
     loadMoreComments() {
@@ -643,6 +653,11 @@ export default Vue.extend({
           height: 13px;
           margin: 0 4px;
         }
+      }
+
+      .comments-error {
+        margin: 50px 0 0 0;
+        color: var(--error-color-red);
       }
 
       .comments-container {
